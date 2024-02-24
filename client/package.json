@@ -2,7 +2,7 @@
   "name": "JATE",
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "webpack --mode production",
+    "build": "yarn client:install && yarn client:build",
     "start": "webpack --watch"
   },
   "author": "2U",
