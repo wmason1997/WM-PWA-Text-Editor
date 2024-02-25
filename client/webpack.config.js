@@ -37,7 +37,7 @@ module.exports = () => {
         inject: true,
         name: 'JATE',
         short_name: 'JATE',
-        description: 'Never forget your contacts!',
+        description: 'Take notes with JavaScript syntax highlighting!',
         background_color: '#225ca3',
         theme_color: '#225ca3',
         start_url: './',
