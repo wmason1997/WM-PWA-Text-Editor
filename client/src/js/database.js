@@ -27,15 +27,17 @@ export const putDb = async (content) => {
   // Open up the desired object store.
   const store = tx.objectStore('jate');
 
-  // Use the .getAll() method to get all data in the database.
-  const request = store.getAll();
+  // Add the new content to the object store
+  const result = await store.add({ content });
 
-  // Get confirmation of the request.
-  const result = await request;
-  console.log('result.value', result);
+  // Log the result of adding the content
+  console.log('Data successfully stored:', result);
+
+  // Complete the transaction
+  await tx.done;
+
+  // Return the result
   return result;
-
-
 };
 
 
