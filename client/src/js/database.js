@@ -1,43 +1,54 @@
 import { openDB } from 'idb';
 
-const initdb = async () =>
-  // creating a new database named 'jate' which will be using version 1 of the database
-  openDB('jate', 1, {
-    // Add our database schema if it has not already been initialized.
-    upgrade(db) {
-      if (db.objectStoreNames.contains('jate')) {
-        console.log('jate database already exists');
-        return;
-      }
-      // Create new object store for the data and give it a key name of 'id' which will autoincrement
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
-      console.log('jate database created');
-    },
-  });
+const initdb = async () => {
+  try {
+    await openDB('jate', 1, {
+      // Add our database schema if it has not already been initialized.
+      upgrade(db) {
+        if (db.objectStoreNames.contains('jate')) {
+          console.log('jate database already exists');
+          return;
+        }
+        // Create a new object store for the data and give it a key name of 'id' which will autoincrement
+        db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+        console.log('jate database created');
+      },
+    });
+  } catch (error) {
+    console.log('Database initialization error:', error);
+  }
+};
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
 // export const putDb = async (content) => console.error('putDb not implemented');
 export const putDb = async (content) => {
-  // Create a connection to the database jate and version we want to use.
-  const jateDb = await openDB('jate', 1);
+  try {
+    // Create a connection to the database 'jate' and specify the version
+    const jateDb = await openDB('jate', 1);
 
-  // Create a new transaction and specify the database and data privileges.
-  const tx = jateDb.transaction('jate', 'readwrite');
+    // Create a new transaction and specify readwrite mode
+    const tx = jateDb.transaction('jate', 'readwrite');
 
-  // Open up the desired object store.
-  const store = tx.objectStore('jate');
+    // Open the object store
+    const store = tx.objectStore('jate');
 
-  // Add the new content to the object store
-  const result = await store.add({ content });
+    // Add the new content to the object store
+    const request = store.add({ content: content });
 
-  // Log the result of adding the content
-  console.log('Data successfully stored:', result);
+    // Handle the success or error of the operation
+    request.onsuccess = () => {
+      console.log('Data successfully stored');
+    };
 
-  // Complete the transaction
-  await tx.done;
+    request.onerror = (event) => {
+      console.error('Error storing data:', event.target.error);
+    };
 
-  // Return the result
-  return result;
+    // Wait for the transaction to complete
+    await tx.complete;
+  } catch (error) {
+    console.error('Error putting data in the database:', error);
+  }
 };
 
 
@@ -55,7 +66,7 @@ export const getDb = async () => {
   const store = tx.objectStore('jate');
 
   // Use the .getAll() method to get all data in the database.
-  const request = store.getAll();
+  const request = await store.getAll();
 
   // Get confirmation of the request.
   const result = await request;
