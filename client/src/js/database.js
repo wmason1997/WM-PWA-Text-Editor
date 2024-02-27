@@ -33,7 +33,7 @@ export const putDb = async (content) => {
     const store = tx.objectStore('jate');
 
     // Add the new content to the object store
-    const request = store.add({ content: content });
+    const request = store.put({ id: 1, value: content });
 
     // Handle the success or error of the operation
     request.onsuccess = () => {
@@ -65,8 +65,8 @@ export const getDb = async () => {
   // Open up the desired object store.
   const store = tx.objectStore('jate');
 
-  // Use the .getAll() method to get all data in the database.
-  const request = await store.getAll();
+  // Use the .get(1) method to get 1 piece that has all the edited text.
+  const request = await store.get(1);
 
   // Get confirmation of the request.
   const result = await request;
