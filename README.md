@@ -43,6 +43,8 @@ I started with an existing application from the 19-PWA folder of [UCSD-VIRT-FSF-
 
 I met with tutor Jacob Carver on Saturday (02/24/2024) and they helped me to successfully deploy my current iteration of the project on Render. It turns out I was using the wrong PORT (10000) and an incorrect NODE_VERSION in my environment variables. Jacob helped me to figure out that I needed to include ```opt/render/project/src/server/client/dist/index.html``` as an included path in my settings on Render based on some error messages that were in the logs. Thanks, Jacob!
 
+I attended OH on 02/26/2024 to debug this e.split() issue that I thought was coming from Code Mirror, but Michael helped me to realize I was returning an array and then a cumbersome object by returning result rather than result.value in getDb function in database.js. Thanks, Michael!
+
 
 ## Contributing <a name="contribution-guidelines"></a>
 Be respectful and please reach out if you have any suggestions. Thank you.
